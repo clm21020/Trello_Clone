@@ -18,5 +18,22 @@ class List < ActiveRecord::Base
 
   default_scope { order(:ord) }
 
+  after_initialize :ensure_ord
+
+  @@ord = 0
+
+  attr_accessor :ord
+
+  def reset_ord(new_ord)
+    self.ord = new_ord
+  end
+
+  def ensure_ord
+    if !(self.ord)
+      self.ord = @@ord.to_f
+      @@ord += 1
+    end
+  end
+
   # TODO: class method for updating orders?
 end
